@@ -34,7 +34,7 @@ https://www.youtube.com/watch?v=bnRqn_kbU0w
 3. Follow the video for basic usage information.
 
 **ISSUES**
-Right now everything is restored except the TogglePhysics() function. Will work on that next. 
+- TogglePhysics() function not restored yet. 
 
 **Plans**
 I plan to recreate this tool in C++ so it will be more efficient. I am also planning to make it work on all maps with their models and assets. If you need help with anything
