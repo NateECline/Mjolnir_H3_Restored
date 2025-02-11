@@ -33,15 +33,13 @@ https://www.youtube.com/watch?v=bnRqn_kbU0w
 2. Extract all the contents of the zip to the same folder. It shouldn't matter what folder just keep all the files together.
 3. Follow the video for basic usage information.
 
-**ISSUES**
-- TogglePhysics() function not restored yet. 
 
 **Plans**
 I plan to recreate this tool in C++ so it will be more efficient. I am also planning to make it work on all maps with their models and assets. If you need help with anything
 hit me up on discord. Username is pownin.
 
 **CREDIT**
-- Waffle1434
-- ExhibitMark
+- Waffle1434: Creator of the original tool.
+- ExhibitMark: Creator of the Halo 3 version.
 - Pownin
-- Bytrl
+- Bytrl | Thanks for helping restore the source code.
