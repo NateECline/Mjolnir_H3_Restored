@@ -124,31 +124,24 @@ namespace ForgeLib
         [DllExport(CallingConvention = CallingConvention.Cdecl)]
         static void FindPointer(UIntPtr halo3Base)
         {
-            UIntPtr mccBase = mccAddress;
-            ptrAddress = mccBase + 0x3FA08D8;
-            ulong max = 140737488355327;
-            ulong min = 140668768878592;
-
-            for (var i = 0; i < 180; i++)
+            try
             {
-                UIntPtr addr = mccBase + 0x3FA08D8;
-                foreach (int offset in new int[] { 0x208, 0x448, 0x84, 0x20, 0x78 })
-                    addr = memory.ReadPointer(addr) + offset;
+                Console.WriteLine("[DEBUG] Entering FindPointer()...");
 
-                ulong casted = addr.ToUInt64();
-                if (casted < max && casted > min)
-                {
-                    ptrAddress = addr;
-                    objectPtr = ptrAddress + 0x1D8;
-                    objectCount = ptrAddress + 0xFC;
-                    var bytes = BitConverter.GetBytes(casted);
-                    Array.Reverse(bytes);
-                    Console.WriteLine("ADDRESS IS: ");
-                    Console.WriteLine(BitConverter.ToString(bytes).Replace("-", string.Empty));
-                    i = 181;
-                }
+                // Static Address
+                ptrAddress = (UIntPtr)0x7FF47E27495C;
+                objectPtr = ptrAddress + 0x1D8;
+                objectCount = ptrAddress + 0xFC;
+
+                Console.WriteLine($"[SUCCESS] Using hardcoded pointer: {ptrAddress}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Exception in FindPointer(): {ex.Message}");
+                Console.WriteLine(ex.StackTrace);
             }
         }
+
 
 
         static void GetH3Pointer()
@@ -157,14 +150,13 @@ namespace ForgeLib
             {
                 Console.WriteLine("[DEBUG] Entering GetH3Pointer()...");
 
-                // Hardcoded address from Cheat Engine
+                // Static address instead of pointer
                 ptrAddress = (UIntPtr)0x7FF47E27495C;
                 objectPtr = ptrAddress + 0x1D8;
                 objectCount = ptrAddress + 0xFC;
 
                 Console.WriteLine($"[SUCCESS] Using hardcoded address: {ptrAddress}");
 
-                // Read MVAR structure safely
                 unsafe
                 {
                     fixed (H3_MapVariant* mvarPtr = &h3_mvar)
