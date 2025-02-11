@@ -41,7 +41,7 @@ I plan to recreate this tool in C++ so it will be more efficient. I am also plan
 hit me up on discord. Username is pownin.
 
 **CREDIT**
--Waffle1434
--ExhibitMark
--Pownin
--Bytrl
+- Waffle1434
+- ExhibitMark
+- Pownin
+- Bytrl
