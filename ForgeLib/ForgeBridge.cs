@@ -275,19 +275,6 @@ namespace ForgeLib
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         static void GetH3Pointer()
         {
             try
@@ -336,11 +323,6 @@ namespace ForgeLib
                 Console.WriteLine(ex.StackTrace);
             }
         }
-
-
-
-
-
 
 
         [DllExport(CallingConvention = CallingConvention.Cdecl)]
