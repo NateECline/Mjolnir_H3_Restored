@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Linq;
+using ForgeLib;
+
 
 namespace ForgeLib
 {
@@ -62,6 +64,9 @@ namespace ForgeLib
         static UIntPtr m_physics_patch;
 
         static H3_MapVariant h3_mvar = new H3_MapVariant();
+
+        static readonly byte?[] AOB_PATTERN = { null, null, null, null, 0x49, 0x8B, 0xE8, 0xF3, 0x0F, 0x10, 0x25 };
+
 
         [DllExport("GetDllVersion", CallingConvention = CallingConvention.Cdecl)]
         public static int GetDllVersion() => 4;
@@ -128,12 +133,69 @@ namespace ForgeLib
             {
                 Console.WriteLine("[DEBUG] Entering FindPointer()...");
 
-                // Static Address
-                ptrAddress = (UIntPtr)0x7FF47E27495C;
+                // Find the MCC process
+                Process[] processes = Process.GetProcessesByName("MCC-Win64-Shipping");
+                if (processes.Length == 0)
+                {
+                    Console.WriteLine("[ERROR] MCC process not found!");
+                    return;
+                }
+
+                int processId = processes[0].Id;
+                Console.WriteLine($"[DEBUG] Found MCC process ID: {processId}");
+
+                // Initialize memory scanner
+                MemoryScanner scanner = new MemoryScanner(processId);
+                IntPtr foundAddress = scanner.FindPattern("halo3.dll", AOB_PATTERN);
+
+                if (foundAddress == IntPtr.Zero)
+                {
+                    Console.WriteLine("[ERROR] AOB scan failed. No matches found.");
+                    return;
+                }
+
+                Console.WriteLine($"[SUCCESS] AOB match found at: 0x{foundAddress.ToInt64():X}");
+
+                // Read the offset from the found address
+                byte[] valueBuffer = new byte[4];
+                if (!scanner.ReadMemory(foundAddress, valueBuffer))
+                {
+                    Console.WriteLine("[ERROR] Failed to read offset!");
+                    return;
+                }
+
+                int offset = BitConverter.ToInt32(valueBuffer, 0);
+                Console.WriteLine($"[SUCCESS] Read offset: {offset:X}");
+
+                // Extract the TLS index
+                byte[] indexBuffer = new byte[1];
+                if (!scanner.ReadMemory(foundAddress + offset + 4, indexBuffer))
+                {
+                    Console.WriteLine("[ERROR] Failed to extract TLS index!");
+                    return;
+                }
+
+                int extractedTLSIndex = indexBuffer[0];
+                Console.WriteLine($"[SUCCESS] Extracted TLS index: {extractedTLSIndex}");
+
+                // Find TLS Address
+                IntPtr tlsAddress = FindTLSAddress(processes[0], scanner, extractedTLSIndex);
+                if (tlsAddress == IntPtr.Zero)
+                {
+                    Console.WriteLine("[ERROR] Failed to retrieve TLS address.");
+                    return;
+                }
+
+                Console.WriteLine($"[SUCCESS] Found valid TLS address: 0x{tlsAddress.ToInt64():X}");
+
+                // **Apply Offset (+120)**
+                IntPtr finalPointer = tlsAddress + 120;
+                ptrAddress = new UIntPtr((ulong)finalPointer.ToInt64());
+
                 objectPtr = ptrAddress + 0x1D8;
                 objectCount = ptrAddress + 0xFC;
 
-                Console.WriteLine($"[SUCCESS] Using hardcoded pointer: {ptrAddress}");
+                Console.WriteLine($"[SUCCESS] Final Pointer: 0x{ptrAddress.ToUInt64():X}");
             }
             catch (Exception ex)
             {
@@ -143,6 +205,88 @@ namespace ForgeLib
         }
 
 
+        static IntPtr FindTLSAddress(Process targetProcess, MemoryScanner scanner, int index)
+        {
+            IntPtr result = IntPtr.Zero;
+            int tlsSlotIndex = index;
+
+            foreach (ProcessThread thread in targetProcess.Threads)
+            {
+                IntPtr hThread = MemoryScanner.OpenThread(0x0040 | 0x0800, false, (uint)thread.Id);
+                if (hThread == IntPtr.Zero)
+                {
+                    Console.WriteLine($"[ERROR] Failed to open thread {thread.Id}");
+                    continue;
+                }
+
+                // Query thread information
+                MemoryScanner.THREAD_BASIC_INFORMATION tbi = new MemoryScanner.THREAD_BASIC_INFORMATION();
+                int status = MemoryScanner.NtQueryInformationThread(hThread, 0, out tbi, Marshal.SizeOf<MemoryScanner.THREAD_BASIC_INFORMATION>(), IntPtr.Zero);
+
+                if (status != 0)
+                {
+                    Console.WriteLine($"[ERROR] Failed to get TEB for thread {thread.Id}. Status: {status}");
+                    continue;
+                }
+
+                // Read TLS pointer from TEB (offset 0x58)
+                byte[] tlsPointerBuffer = new byte[8];
+                if (!scanner.ReadMemory(tbi.TebBaseAddress + 0x58, tlsPointerBuffer))
+                {
+                    Console.WriteLine($"[ERROR] Failed to read TLS pointer for thread {thread.Id}");
+                    continue;
+                }
+
+                IntPtr tlsPointer = (IntPtr)BitConverter.ToInt64(tlsPointerBuffer, 0);
+
+                // Read module-specific TLS slot
+                byte[] tlsBuffer = new byte[8];
+                if (!scanner.ReadMemory(tlsPointer + tlsSlotIndex * IntPtr.Size, tlsBuffer))
+                {
+                    Console.WriteLine($"[ERROR] Failed to read module TLS slot for thread {thread.Id}");
+                    continue;
+                }
+
+                IntPtr moduleTlsPointer = (IntPtr)BitConverter.ToInt64(tlsBuffer, 0);
+
+                // Read final address at (moduleTlsPointer + 0x20)
+                if (!scanner.ReadMemory(moduleTlsPointer + 0x20, tlsBuffer))
+                {
+                    Console.WriteLine($"[ERROR] Failed to read final pointer for thread {thread.Id}");
+                    continue;
+                }
+
+                IntPtr finalPointer = (IntPtr)BitConverter.ToInt64(tlsBuffer, 0);
+
+                if (finalPointer.ToInt64().ToString("X").StartsWith("7F"))
+                {
+                    Console.WriteLine($"[SUCCESS] Found valid TLS address: 0x{finalPointer.ToInt64():X}");
+                    result = finalPointer;
+                    break;
+                }
+            }
+
+            if (result == IntPtr.Zero)
+            {
+                Console.WriteLine("[ERROR] Failed to locate TLS address.");
+            }
+
+            return result;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         static void GetH3Pointer()
         {
@@ -150,12 +294,13 @@ namespace ForgeLib
             {
                 Console.WriteLine("[DEBUG] Entering GetH3Pointer()...");
 
-                // Static address instead of pointer
-                ptrAddress = (UIntPtr)0x7FF47E27495C;
-                objectPtr = ptrAddress + 0x1D8;
-                objectCount = ptrAddress + 0xFC;
+                if (ptrAddress == UIntPtr.Zero)
+                {
+                    Console.WriteLine("[ERROR] ptrAddress is zero! Run FindPointer() first.");
+                    return;
+                }
 
-                Console.WriteLine($"[SUCCESS] Using hardcoded address: {ptrAddress}");
+                Console.WriteLine($"[SUCCESS] Using dynamically found address: {ptrAddress}");
 
                 unsafe
                 {
@@ -191,6 +336,9 @@ namespace ForgeLib
                 Console.WriteLine(ex.StackTrace);
             }
         }
+
+
+
 
 
 

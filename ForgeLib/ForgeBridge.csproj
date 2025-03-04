@@ -98,6 +98,7 @@
     <Compile Include="H3_ForgeObject.cs" />
     <Compile Include="ItemParser.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="MemoryScanner.cs" />
     <Compile Include="ProcessMemory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

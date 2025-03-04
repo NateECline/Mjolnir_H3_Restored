@@ -5,6 +5,21 @@
     {
       "AbsoluteMoniker": "D:0:0:{C406A200-A357-4B21-938F-22E5187C34F4}|ForgeLib\\ForgeBridge.csproj|e:\\coding\\forge tool source\\mjolnir-h3\\forgelib\\forgebridge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C406A200-A357-4B21-938F-22E5187C34F4}|ForgeLib\\ForgeBridge.csproj|solutionrelative:forgelib\\forgebridge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C406A200-A357-4B21-938F-22E5187C34F4}|ForgeLib\\ForgeBridge.csproj|E:\\Coding\\Forge Tool Source\\mjolnir-h3\\forgelib\\memoryscanner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C406A200-A357-4B21-938F-22E5187C34F4}|ForgeLib\\ForgeBridge.csproj|solutionrelative:forgelib\\memoryscanner.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C406A200-A357-4B21-938F-22E5187C34F4}|ForgeLib\\ForgeBridge.csproj|E:\\Coding\\Forge Tool Source\\mjolnir-h3\\forgelib\\processmemory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C406A200-A357-4B21-938F-22E5187C34F4}|ForgeLib\\ForgeBridge.csproj|solutionrelative:forgelib\\processmemory.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|E:\\Coding\\Mjolnir_CPP\\Mjolnir_CPP\\ItemParser.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{808C86DC-FB36-4877-9FD4-48220D1D8EC1}|ForgeConsole\\ForgeConsole.csproj|E:\\Coding\\Forge Tool Source\\mjolnir-h3\\forgeconsole\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{808C86DC-FB36-4877-9FD4-48220D1D8EC1}|ForgeConsole\\ForgeConsole.csproj|solutionrelative:forgeconsole\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +29,57 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MemoryScanner.cs",
+              "DocumentMoniker": "E:\\Coding\\Forge Tool Source\\mjolnir-h3\\ForgeLib\\MemoryScanner.cs",
+              "RelativeDocumentMoniker": "ForgeLib\\MemoryScanner.cs",
+              "ToolTip": "E:\\Coding\\Forge Tool Source\\mjolnir-h3\\ForgeLib\\MemoryScanner.cs",
+              "RelativeToolTip": "ForgeLib\\MemoryScanner.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAQwCEAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-02T07:35:32.723Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ItemParser.cpp",
+              "DocumentMoniker": "E:\\Coding\\Mjolnir_CPP\\Mjolnir_CPP\\ItemParser.cpp",
+              "RelativeDocumentMoniker": "..\\..\\Mjolnir_CPP\\Mjolnir_CPP\\ItemParser.cpp",
+              "ToolTip": "E:\\Coding\\Mjolnir_CPP\\Mjolnir_CPP\\ItemParser.cpp",
+              "RelativeToolTip": "..\\..\\Mjolnir_CPP\\Mjolnir_CPP\\ItemParser.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2025-02-13T06:03:52.082Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProcessMemory.cs",
+              "DocumentMoniker": "E:\\Coding\\Forge Tool Source\\mjolnir-h3\\ForgeLib\\ProcessMemory.cs",
+              "RelativeDocumentMoniker": "ForgeLib\\ProcessMemory.cs",
+              "ToolTip": "E:\\Coding\\Forge Tool Source\\mjolnir-h3\\ForgeLib\\ProcessMemory.cs",
+              "RelativeToolTip": "ForgeLib\\ProcessMemory.cs",
+              "ViewState": "AQIAAN0AAAAAAAAAAAAqwE8CAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T20:44:20.5Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\Coding\\Forge Tool Source\\mjolnir-h3\\ForgeConsole\\Program.cs",
+              "RelativeDocumentMoniker": "ForgeConsole\\Program.cs",
+              "ToolTip": "E:\\Coding\\Forge Tool Source\\mjolnir-h3\\ForgeConsole\\Program.cs",
+              "RelativeToolTip": "ForgeConsole\\Program.cs",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAgwCMAAAAOAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-11T20:07:23.06Z"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +88,7 @@
               "RelativeDocumentMoniker": "ForgeLib\\ForgeBridge.cs",
               "ToolTip": "E:\\Coding\\Forge Tool Source\\mjolnir-h3\\ForgeLib\\ForgeBridge.cs",
               "RelativeToolTip": "ForgeLib\\ForgeBridge.cs",
-              "ViewState": "AQIAAKwAAAAAAAAAAAAgwMkAAAAAAAAA",
+              "ViewState": "AQIAAKgAAAAAAAAAAAAYwM0AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-09T06:55:55.852Z",
               "EditorCaption": ""

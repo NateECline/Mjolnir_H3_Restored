@@ -65,6 +65,43 @@ namespace ForgeLib {
             }
         }
 
+        public List<UIntPtr> AoBScan(UIntPtr startAddress, UIntPtr endAddress, byte[] pattern, string mask = null)
+        {
+            List<UIntPtr> results = new List<UIntPtr>();
+            int bufferSize = 4096; // Read memory in chunks
+
+            byte[] buffer = new byte[bufferSize];
+
+            for (UIntPtr address = startAddress; address.ToUInt64() < endAddress.ToUInt64(); address = (UIntPtr)(address.ToUInt64() + (ulong)bufferSize))
+            {
+                if (!TryReadBytes(address, buffer, bufferSize))
+                    continue;
+
+                for (int i = 0; i < bufferSize - pattern.Length; i++)
+                {
+                    if (PatternMatches(buffer, i, pattern, mask))
+                    {
+                        results.Add((UIntPtr)(address.ToUInt64() + (ulong)i));
+                    }
+                }
+            }
+            return results;
+        }
+
+        private bool PatternMatches(byte[] buffer, int index, byte[] pattern, string mask)
+        {
+            for (int i = 0; i < pattern.Length; i++)
+            {
+                if (mask != null && mask[i] == '?')
+                    continue; // Wildcard, ignore check
+
+                if (buffer[index + i] != pattern[i])
+                    return false;
+            }
+            return true;
+        }
+
+
         public void CloseProcess() {
             _ = pHandle;
             if (0 == 0) {
